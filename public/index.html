@@ -42,30 +42,9 @@
         <div class="col">
           <label for="voiceFormat" class="form-label">音频格式：</label>
           <select name="voiceFormat" class="form-select">
-            <option value="raw-16khz-16bit-mono-pcm">raw-16khz-16bit-mono-pcm</option>
-            <option value="raw-48khz-16bit-mono-pcm">raw-48khz-16bit-mono-pcm</option>
-            <option value="raw-8khz-8bit-mono-mulaw">raw-8khz-8bit-mono-mulaw</option>
-            <option value="raw-8khz-8bit-mono-alaw">raw-8khz-8bit-mono-alaw</option>
-            <option value="raw-16khz-16bit-mono-truesilk">raw-16khz-16bit-mono-truesilk</option>
-            <option value="raw-24khz-16bit-mono-truesilk">raw-24khz-16bit-mono-truesilk</option>
-            <option value="riff-16khz-16bit-mono-pcm">riff-16khz-16bit-mono-pcm</option>
-            <option value="riff-24khz-16bit-mono-pcm">riff-24khz-16bit-mono-pcm</option>
-            <option value="riff-48khz-16bit-mono-pcm">riff-48khz-16bit-mono-pcm</option>
-            <option value="riff-8khz-8bit-mono-mulaw">riff-8khz-8bit-mono-mulaw</option>
-            <option value="riff-8khz-8bit-mono-alaw">riff-8khz-8bit-mono-alaw</option>
-            <option value="audio-16khz-32kbitrate-mono-mp3">audio-16khz-32kbitrate-mono-mp3</option>
-            <option value="audio-16khz-64kbitrate-mono-mp3">audio-16khz-64kbitrate-mono-mp3</option>
-            <option value="audio-16khz-128kbitrate-mono-mp3">audio-16khz-128kbitrate-mono-mp3</option>
             <option value="audio-24khz-48kbitrate-mono-mp3">audio-24khz-48kbitrate-mono-mp3</option>
             <option value="audio-24khz-96kbitrate-mono-mp3">audio-24khz-96kbitrate-mono-mp3</option>
-            <option value="audio-24khz-160kbitrate-mono-mp3">audio-24khz-160kbitrate-mono-mp3</option>
-            <option value="audio-48khz-96kbitrate-mono-mp3">audio-48khz-96kbitrate-mono-mp3</option>
-            <option value="audio-48khz-192kbitrate-mono-mp3">audio-48khz-192kbitrate-mono-mp3</option>
-            <option value="webm-16khz-16bit-mono-opus">webm-16khz-16bit-mono-opus</option>
             <option value="webm-24khz-16bit-mono-opus" selected>webm-24khz-16bit-mono-opus</option>
-            <option value="ogg-16khz-16bit-mono-opus">ogg-16khz-16bit-mono-opus</option>
-            <option value="ogg-24khz-16bit-mono-opus">ogg-24khz-16bit-mono-opus</option>
-            <option value="ogg-48khz-16bit-mono-opus">ogg-48khz-16bit-mono-opus</option>
           </select>
           <div class="form-text">
             <p>可以调整音频的格式和质量。质量越高，生成的文件越大，对网速和流量的需求越高。请根据自己的情况选择。</p>
@@ -142,19 +121,19 @@
       });
 
     function refreshVoice() {
-      let voiceElelement = document.getElementsByName('voiceName')[0];
-      voiceElelement.innerHTMl = '';
+      const voiceElement = document.getElementsByName('voiceName')[0];
+      voiceElement.innerHTML = '';
       voices.forEach(item => {
-        let option = document.createElement('option');
-        option.value = item['ShortName'];
-        option.innerText = item['FriendlyName'];
-        if (item['ShortName'] == 'zh-CN-XiaoxiaoNeural') {
-          option.selected = true;
+        if (item['Locale'] === 'zh-CN') { // 只处理中文声音
+          const option = document.createElement('option');
+          option.value = item['ShortName'];
+          option.innerText = item['FriendlyName']; // 使用FriendlyName
+          voiceElement.append(option);
         }
-        voiceElelement.append(option)
       });
       updateConfigName();
     }
+
 
     function updateConfigName() {
       let voice = document.getElementsByName('voiceName')[0].value;
